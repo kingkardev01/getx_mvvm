@@ -41,7 +41,7 @@ class NetworkApiServices extends BaseApiServices{
 
     try{
       final response = await http.post(Uri.parse(url),
-        body: jsonEncode(data)
+        body: data,
 
       ).timeout(const Duration(seconds: 10));
       responseJson =returnResponse(response);
@@ -55,15 +55,15 @@ class NetworkApiServices extends BaseApiServices{
 
 
   dynamic returnResponse(http.Response response){
-
     switch(response.statusCode){
       case 200:
         dynamic responseJson =jsonDecode(response.body);
         return responseJson;
       case 400:
-        throw InvalidUrlException;
+        dynamic responseJson =jsonDecode(response.body);
+        return responseJson;
       default :
-        throw FetchDataException('Error occurred while communication  with server ${response.statusCode}');
+        throw FetchDataException('Error occurred while communication  with server ${response.statusCode.toString()}');
     }
   }
 
